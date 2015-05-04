@@ -32,6 +32,12 @@ io.sockets.on("connection", function (socket) {
     io.sockets.emit("publish", {value:data.value});
   });
 
+  socket.on("update", function (data) {
+    var msg = userHash[socket.id] + " is typing " + data.value;
+    socket.broadcast.emit("istyping", {value:msg});
+  });
+
+
   // 接続終了組み込みイベント(接続元ユーザを削除し、他ユーザへ通知)
   socket.on("disconnect", function () {
     if (userHash[socket.id]) {
