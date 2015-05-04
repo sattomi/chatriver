@@ -1,0 +1,71 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ホソミチチャット</title>
+</head>
+<body>
+
+  <input type="text" id="nm_input" style="width:100px;" />
+  <button onclick="changeName();">changeName</button>
+  <br>
+
+  <input type="text" id="msg_input" style="width:300px;" />
+  <button onclick="publishMessage();">send</button>
+  <div id="msg"></div>
+
+  <div id="isTyping" style="width:300px; height:20px"><p></p></div>
+
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    // リアルタイムに入力欄の中身を取得
+    jQuery("#msg_input").on('click blur keydown keyup keypress change',function(){
+      var realtimeText = jQuery("#msg_input").val();
+      jQuery("#isTyping p").html(realtimeText);
+    });
+  </script>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript">
+
+    // 1.イベントとコールバックの定
+    var socketio = io.connect('http://localhost:8080');
+
+    socketio.on("connected", function(name) {});
+    socketio.on("publish", function (data) {addMessage(data.value); });
+    socketio.on("disconnect", function () {});
+    socketio.on("istyping", function (data) {addMessage(data.value); });
+
+    // 2.イベントに絡ませる関数の定義
+    function start(name) {
+      socketio.emit("connected", name);
+    }
+
+    function changeName() {
+      var newnm = document.getElementById('nm_input');
+      myName = newnm.value;
+      socketio.emit("changename", newnm.value);
+    }
+
+    function publishMessage() {
+      var textInput = document.getElementById('msg_input');
+      var msg = "[" + myName + "] " + ' - ' + textInput.value;
+      socketio.emit("publish", {value: msg});
+      textInput.value = '';
+    }
+
+    function addMessage (msg) {
+      var domMeg = document.createElement('div');
+      domMeg.innerHTML = new Date().toLocaleTimeString() + ': ' + msg;
+      msgArea.appendChild(domMeg);
+    }
+
+    // 3.開始処理
+    var msgArea = document.getElementById("msg");
+    var myName = Math.floor(Math.random()*100);
+
+    addMessage("You are " + myName);
+    start(myName);
+  </script>
+</body>
+</html>
