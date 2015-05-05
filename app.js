@@ -17,19 +17,19 @@ io.sockets.on("connection", function (socket) {
   socket.on("connected", function (name) {
     var msg = name + "が入室しました";
     userHash[socket.id] = name;
-    io.sockets.emit("publish", {value: msg});
+    io.sockets.emit("send", {value: msg});
   });
 
   // 名前変更カスタムイベント
-  socket.on("changename", function (newnm) {
-    var msg = "Name changed from " + userHash[socket.id] + " to " + newnm;
-    userHash[socket.id] = newnm;
-    io.sockets.emit("publish", {value: msg});
+  socket.on("changename", function (data) {
+    var msg = "Name changed from " + userHash[socket.id] + " to " + data;
+    userHash[socket.id] = data;
+    io.sockets.emit("send", {value: msg});
   });
 
   // メッセージ送信カスタムイベント
-  socket.on("publish", function (data) {
-    io.sockets.emit("publish", {value:data.value});
+  socket.on("send", function (data) {
+    io.sockets.emit("send", {value:data.value});
   });
 
   socket.on("update", function (data) {
@@ -43,7 +43,7 @@ io.sockets.on("connection", function (socket) {
     if (userHash[socket.id]) {
       var msg = userHash[socket.id] + "が退出しました";
       delete userHash[socket.id];
-      io.sockets.emit("publish", {value: msg});
+      io.sockets.emit("send", {value: msg});
     }
   });
 });

@@ -10,7 +10,7 @@
   <br>
 
   <input type="text" id="msg_input" style="width:300px;" />
-  <button onclick="publishMessage();">send</button>
+  <button onclick="sendMessage();">send</button>
   <div id="isTyping" style="width:300px; height:20px"><p></p></div>
   <div id="msg"></div>
 
@@ -31,7 +31,7 @@
     var socketio = io.connect('http://localhost:8080');
 
     socketio.on("connected", function(name) {});
-    socketio.on("publish", function (data) {addMessage(data.value); });
+    socketio.on("send", function (data) {addMessage(data.value); });
     socketio.on("disconnect", function () {});
     socketio.on("istyping", function (data) {showRealtimeMessage(data.value); });
 
@@ -47,10 +47,10 @@
       //newnm.value = '';
     }
 
-    function publishMessage() {
+    function sendMessage() {
       var textInput = document.getElementById('msg_input');
       var msg = "[" + myName + "] " + ' - ' + textInput.value;
-      socketio.emit("publish", {value: msg}); //objectとしての扱い
+      socketio.emit("send", {value: msg}); //objectとしての扱い
       textInput.value = '';
     }
 
@@ -60,8 +60,8 @@
       msgArea.appendChild(domMeg);
     }
 
-    function showRealtimeMessage (realms) {
-      jQuery("#isTyping p").html(realms);
+    function showRealtimeMessage (realmsg) {
+      jQuery("#isTyping p").html(realmsg);
     }
 
     function updateRealtimeMessage (msg) {
