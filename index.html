@@ -33,7 +33,7 @@
     socketio.on("connected", function(name) {});
     socketio.on("send", function (data) {addMessage(data.value); });
     socketio.on("disconnect", function () {});
-    socketio.on("istyping", function (data) {showRealtimeMessage(data.value); });
+    socketio.on("istyping", function (data) {showRealtimeMessage(data); });
 
     // 2.イベントに絡ませる関数の定義
     function start(name) {
@@ -60,8 +60,12 @@
       msgArea.appendChild(domMeg);
     }
 
-    function showRealtimeMessage (realmsg) {
-      jQuery("#isTyping p").html(realmsg);
+    function showRealtimeMessage (data) {
+      if(data.msg){
+        jQuery("#isTyping p").html(data.name + ' is typing ' + data.msg);
+      }else{
+        jQuery("#isTyping p").html('');
+      } 
     }
 
     function updateRealtimeMessage (msg) {
