@@ -29,12 +29,13 @@ io.sockets.on("connection", function (socket) {
 
   // メッセージ送信カスタムイベント
   socket.on("send", function (data) {
-    io.sockets.emit("send", {value:data.value});
+    io.sockets.emit("send", {value: data.value});
   });
 
   socket.on("update", function (data) {
-    var msg = userHash[socket.id] + " is typing " + data.value;
-    socket.broadcast.emit("istyping", {value:msg});
+    var name = userHash[socket.id];
+    var msg = data.value;
+    socket.broadcast.emit("istyping", {name: name, msg: msg});
   });
 
 
