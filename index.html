@@ -31,7 +31,10 @@
     var socketio = io.connect('http://localhost:8080');
 
     socketio.on("connected", function(name) {});
-    socketio.on("send", function (data) {addMessage(data.value); });
+    socketio.on("send", function (data) {
+      addMessage(data.value); 
+      clearRealtimeMessage();
+    });
     socketio.on("disconnect", function () {});
     socketio.on("istyping", function (data) {showRealtimeMessage(data); });
 
@@ -60,11 +63,16 @@
       msgArea.appendChild(domMeg);
     }
 
+    function clearRealtimeMessage () {
+       jQuery("#isTyping p").html('');
+    }
+
+
     function showRealtimeMessage (data) {
       if(data.msg){
         jQuery("#isTyping p").html(data.name + ' is typing ' + data.msg);
       }else{
-        jQuery("#isTyping p").html('');
+        clearRealtimeMessage();
       } 
     }
 
