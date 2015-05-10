@@ -21,16 +21,28 @@
   <script src="/socket.io/socket.io.js"></script>
 
   <script type="text/javascript">
-    jQuery("#msg_input").on('keyup',function(){
+    jQuery("#msg_input").on('keyup',function(e){
       var realtimeText = jQuery("#msg_input").val();
-//      jQuery("#isTyping p").html(realtimeText);
       updateRealtimeMessage(realtimeText);
     });
+
+    jQuery("#msg_input").keydown(function(e) {
+      if((e.metaKey || e.ctrlKey) && e.keyCode == 13){
+        sendMessage();
+      }
+    });
+
+    jQuery("#nm_input").keydown(function(e) {
+      if((e.metaKey || e.ctrlKey) && e.keyCode == 13){
+        changeName();
+      }
+    });
+
 
     // 1.イベントとコールバックの定
     var socketio = io.connect('http://localhost:8080');
 
-    socketio.on("connected", function(name) {});
+    socketio.on("connected", function (name) {});
     socketio.on("send", function (data) {
       addMessage(data.value); 
       clearRealtimeMessage();
@@ -57,18 +69,18 @@
       textInput.value = '';
     }
 
-    function addMessage (msg) {
+    function addMessage(msg) {
       var domMeg = document.createElement('div');
       domMeg.innerHTML = new Date().toLocaleTimeString() + ': ' + msg;
       msgArea.appendChild(domMeg);
     }
 
-    function clearRealtimeMessage () {
+    function clearRealtimeMessage() {
        jQuery("#isTyping p").html('');
     }
 
 
-    function showRealtimeMessage (data) {
+    function showRealtimeMessage(data) {
       if(data.msg){
         jQuery("#isTyping p").html(data.name + ' is typing ' + data.msg);
       }else{
@@ -76,7 +88,7 @@
       } 
     }
 
-    function updateRealtimeMessage (msg) {
+    function updateRealtimeMessage(msg) {
       socketio.emit("update", {value: msg});
     }
 
