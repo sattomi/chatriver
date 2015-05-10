@@ -5,7 +5,7 @@
 </head>
 <body>
 
-  <input type="text" id="nm_input" style="width:100px;" />
+  <input type="text" id="name_input" style="width:100px;" />
   <button onclick="changeName();">changeName</button>
   <br>
 
@@ -21,25 +21,28 @@
   <script src="/socket.io/socket.io.js"></script>
 
   <script type="text/javascript">
+     // msg_inputエリアに何か入力されたらRealtimeMessageを送信
     jQuery("#msg_input").on('keyup',function(e){
       var realtimeText = jQuery("#msg_input").val();
       updateRealtimeMessage(realtimeText);
     });
 
+     // msg_inputエリアでMeta key + Enterが押されたらMessageをsend
     jQuery("#msg_input").keydown(function(e) {
       if((e.metaKey || e.ctrlKey) && e.keyCode == 13){
         sendMessage();
       }
     });
-
-    jQuery("#nm_input").keydown(function(e) {
+ 
+     // name_inputエリアでMeta key + Enterが押されたら名前を変更
+    jQuery("#name_input").keydown(function(e) {
       if((e.metaKey || e.ctrlKey) && e.keyCode == 13){
         changeName();
       }
     });
 
 
-    // 1.イベントとコールバックの定
+    // 1.イベントとコールバックの定義
     var socketio = io.connect('http://localhost:8080');
 
     socketio.on("connected", function (name) {});
@@ -56,10 +59,9 @@
     }
 
     function changeName() {
-      var newnm = document.getElementById('nm_input');
-      myName = newnm.value;
-      socketio.emit("changename", newnm.value); //文字列
-      //newnm.value = '';
+      var newName = document.getElementById('name_input');
+      myName = newName.value;
+      socketio.emit("changename", newName.value); //文字列としての扱い
     }
 
     function sendMessage() {
