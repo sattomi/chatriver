@@ -1,34 +1,35 @@
 // 1.モジュールオブジェクトの初期化
 var fs = require("fs");
 var server = require("http").createServer(function(req, res) {
-    if(req.url.indexOf('.html') != -1){ //req.url has the pathname, check if it conatins '.html'
 
-      fs.readFile(__dirname + './index.html', function (err, data) {
+    if(req.url.indexOf('.html') != -1){ //req.url has the pathname, check if it conatins '.html'
+      fs.readFile(__dirname + 'index.html', function (err, data) {
         res.writeHead(200, {"Content-Type":"text/html"});
         var output = fs.readFileSync("./index.html", "utf-8");
         res.end(output);      
       });
-    }
-
-    if(req.url.indexOf('.js') != -1){ //req.url has the pathname, check if it conatins '.js'
-
+    }else if(req.url.indexOf('.js') != -1){ 
       fs.readFile(__dirname + '/public/javascripts/jquery-1.7.1.min.js', function (err, data) {
         if (err) console.log(err);
         res.writeHead(200, {'Content-Type': 'text/javascript'});
         res.write(data);
         res.end();
       });
-    }
-
-    if(req.url.indexOf('.css') != -1){ //req.url has the pathname, check if it conatins '.css'
-
+    }else if(req.url.indexOf('.css') != -1){ 
       fs.readFile(__dirname + '/public/stylesheets/userpage.css', function (err, data) {
         if (err) console.log(err);
         res.writeHead(200, {'Content-Type': 'text/css'});
         res.write(data);
         res.end();
       });
-    }
+    }else if(req.url == '/'){ 
+      fs.readFile(__dirname + 'index.html', function (err, data) {
+        res.writeHead(200, {"Content-Type":"text/html"});
+        var output = fs.readFileSync("./index.html", "utf-8");
+        res.end(output);      
+      });
+    }    
+
 }).listen(8080);
 
 var io = require("socket.io").listen(server);
