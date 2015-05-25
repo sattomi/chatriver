@@ -2,21 +2,79 @@
 <head>
   <meta charset="UTF-8">
   <title>chatriver</title>
+  <link rel="stylesheet" type="text/css" href="./public/stylesheets/userpage.css">
+
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
 </head>
+
 <body>
 
   <input type="text" id="name_input" style="width:100px;" />
   <button onclick="changeName();">changeName</button>
   <br>
 
-  <input type="text" id="msg_input" style="width:300px;" />
-  <button onclick="sendMessage();">send</button>
-  <div id="isTyping" style="width:300px; height:20px"><p></p></div>
-  <div id="msg"></div>
+    <div id="wrapper">
+      <div class="message-container">
+        <ul class="message-userlist">
+            <li>
+              <a href="#">
+                <span class="user-img"></span>
+                <span class="user-title">Bryan Adams</span>
+                <p class="user-desc">badams@music.com</p>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <span class="user-img"></span>
+                <span class="user-title">Enrique Iglesias</span>
+                <p class="user-desc">enriqueiglesias@music.com</p>
+              </a>
+            </li>
+            <li>
+              <a class="active" href="#">
+                <span class="user-img"></span>
+                <span class="user-title">Jack Johnson</span>
+                <p class="user-desc">jackjohnson@music.com</p>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <span class="user-img"></span>
+                <span class="user-title">Paul McCartney</span>
+                <p class="user-desc">paulmccartney@music.com</p>
+              </a>
+            </li>
+          </ul>
+        <div class="message-chatarea">
+          <div class="message-log" id="msgArea">
+            <div class="message bubble-left">
+              <label class="message-user">Bryan Adams</label>
+              <label class="message-timestamp">3 Hours Ago</label>
+              <p>Lorem ipsum dolor sit amet, consectetur.</p>
+            </div>
+        
+            <div class="message bubble-left">
+              <label class="message-user">Bryan Adams</label>
+              <label class="message-timestamp">2 Hours Ago</label>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
 
-  <script type="text/javascript">
+            <div class="message bubble-left" id="isTyping" style="width:300px; height:20px"><p></p></div>
+            <div id="msg"></div>
+          </div>
+          
+          <div class="message-typing">
+  <!--          <textarea cols="20" rows="3"></textarea>  -->
+            <input type="text" id="msg_input" style="width:300px;" />
+            <button onclick="sendMessage();">send</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
      // msg_inputエリアに何か入力されたらRealtimeMessageを送信
     jQuery("#msg_input").on('keyup',function(e){
       var realtimeText = jQuery("#msg_input").val();
@@ -69,7 +127,9 @@
 
     function addMessage(msg) {
       var domMeg = document.createElement('div');
-      domMeg.innerHTML = new Date().toLocaleTimeString() + ': ' + msg;
+      domMeg.setAttribute('class', 'message bubble-left');
+      domMeg.id = 'msgArea';  //maybelater
+      domMeg.innerHTML = /* new Date().toLocaleTimeString() + ': ' + */ msg;
       msgArea.appendChild(domMeg);
     }
 
@@ -91,12 +151,13 @@
     }
 
     // 3.開始処理
-    var msgArea = document.getElementById("msg");
-    var myName = Math.floor(Math.random()*100);
+    var msgArea = document.getElementById('msgArea');
+    var myName = "original" + Math.floor(Math.random()*100);
 
     addMessage("You are " + myName);
-    start(myName);
-   
-  </script>
-</body>
+    start(myName);ƒ
+
+    </script>
+
+  </body>
 </html>
