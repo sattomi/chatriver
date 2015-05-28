@@ -4,8 +4,8 @@
   <title>chatriver</title>
   <link rel="stylesheet" type="text/css" href="./public/stylesheets/userpage.css">
 
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="./public/javascripts/jquery-1.7.1.min.js"></script>
+  <script src="./socket.io/socket.io.js"></script>
 </head>
 
 <body>
@@ -48,20 +48,7 @@
           </ul>
         <div class="message-chatarea">
           <div class="message-log" id="msgArea">
-            <div class="message bubble-left">
-              <label class="message-user">Bryan Adams</label>
-              <label class="message-timestamp">3 Hours Ago</label>
-              <p>Lorem ipsum dolor sit amet, consectetur.</p>
-            </div>
-        
-            <div class="message bubble-left">
-              <label class="message-user">Bryan Adams</label>
-              <label class="message-timestamp">2 Hours Ago</label>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-
-            <div class="message bubble-left" id="isTyping" style="width:300px; height:20px"><p></p></div>
-            <div id="msg"></div>
+            <!-- messages will appear here. class="message bubble-left" -->
           </div>
           
           <div class="message-typing">
@@ -77,8 +64,8 @@
     <script type="text/javascript">
      // msg_inputエリアに何か入力されたらRealtimeMessageを送信
     jQuery("#msg_input").on('keyup',function(e){
-      var realtimeText = jQuery("#msg_input").val();
-      updateRealtimeMessage(realtimeText);
+      var realTimeMessage = jQuery("#msg_input").val();
+      updateRealtimeMessage(realTimeMessage);
     });
 
      // msg_inputエリアでMeta key + Enterが押されたらMessageをsend
@@ -134,16 +121,26 @@
     }
 
     function clearRealtimeMessage() {
-       jQuery("#isTyping p").html('');
+       jQuery("#isTyping").html('');
     }
 
 
     function showRealtimeMessage(data) {
       if(data.msg){
-        jQuery("#isTyping p").html(data.name + ' is typing ' + data.msg);
+        if(!realTimeTextBubble){
+          setRealTimeTextBubble();
+        }
+        realTimeTextBubble.innerHTML =(data.msg + '...');
       }else{
         clearRealtimeMessage();
       } 
+    }
+
+    function setRealTimeTextBubble() {
+      realTimeTextBubble = document.createElement('div');
+      realTimeTextBubble.setAttribute('class', 'message bubble-left');
+      realTimeTextBubble.id = 'isTyping';
+      msgArea.appendChild(realTimeTextBubble);
     }
 
     function updateRealtimeMessage(msg) {
@@ -153,9 +150,10 @@
     // 3.開始処理
     var msgArea = document.getElementById('msgArea');
     var myName = "original" + Math.floor(Math.random()*100);
+    var realTimeTextBubble = '';
 
     addMessage("You are " + myName);
-    start(myName);ƒ
+    start(myName);
 
     </script>
 
