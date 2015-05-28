@@ -121,7 +121,8 @@
     }
 
     function clearRealtimeMessage() {
-       jQuery("#isTyping").html('');
+       $("#isTyping").remove();
+       realTimeTextBubble = '';
     }
 
 
@@ -137,7 +138,7 @@
     }
 
     function setRealTimeTextBubble() {
-      realTimeTextBubble = document.createElement('div');
+      realTimeTextBubble = document.createElement('div');   //TODO: dom操作じゃなくてcss操作にする
       realTimeTextBubble.setAttribute('class', 'message bubble-left');
       realTimeTextBubble.id = 'isTyping';
       msgArea.appendChild(realTimeTextBubble);
