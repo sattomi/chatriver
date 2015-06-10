@@ -1,8 +1,11 @@
 //file name can be changed to anything
 
 // http://passportjs.org/guide/twitter/
-var TWITTER_CONSUMER_KEY = 'DFiAciNUf8PEMBs5PZXMHWu2';
-var TWITTER_CONSUMER_SECRET = '3SzxYqPRbwSNloST9Du0MSUjaPqKR6ftWeftBnx3bPeUpbaoxz';
+
+var conf = require('config');
+
+var TWITTER_CONSUMER_KEY = conf.twitter.CONSUMER_KEY;
+var TWITTER_CONSUMER_SECRET = conf.twitter.CONSUMER_SECRET;
 var passport = require('passport')
   , TwitterStrategy = require('passport-twitter').Strategy;
 
@@ -18,7 +21,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new TwitterStrategy({
     consumerKey: TWITTER_CONSUMER_KEY,
     consumerSecret: TWITTER_CONSUMER_SECRET,
-    callbackURL: "http://localhost:3000/auth/twitter/callback"
+    callbackURL: "http://localhost:8080/auth/twitter/callback"
   },
   function(token, tokenSecret, profile, done) {
     passport.session.id = profile.id;
