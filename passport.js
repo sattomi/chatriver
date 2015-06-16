@@ -1,39 +1,70 @@
-//file name can be changed to anything
-
 // http://passportjs.org/guide/twitter/
 
 var conf = require('config');
+var mongoose = require('mongoose');
 
-var TWITTER_CONSUMER_KEY = conf.twitter.CONSUMER_KEY;
-var TWITTER_CONSUMER_SECRET = conf.twitter.CONSUMER_SECRET;
 var passport = require('passport')
   , TwitterStrategy = require('passport-twitter').Strategy;
 
-// Sessionの設定
-// http://passportjs.org/guide/configure/
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
-});
+// ./config/default.jsonから変数の読み出し
+var TWITTER_CONSUMER_KEY    = conf.twitter.CONSUMER_KEY;
+var TWITTER_CONSUMER_SECRET = conf.twitter.CONSUMER_SECRET;
+
+mongoose.connect("mongodb://localhost/thru");
+
 
 passport.use(new TwitterStrategy({
     consumerKey: TWITTER_CONSUMER_KEY,
     consumerSecret: TWITTER_CONSUMER_SECRET,
     callbackURL: "http://localhost:8080/auth/twitter/callback"
   },
+  // TODO: db関連のコードを別ファイルに移動する
   function(token, tokenSecret, profile, done) {
-    passport.session.id = profile.id;
-
-    // tokenとtoken_secretをセット
-    profile.twitter_token = token;
-    profile.twitter_token_secret = tokenSecret;
-
-    process.nextTick(function () {
-        return done(null, profile);
+    return User.findOne({ twitter_id: profile.id}, 
+      function(err, user) {
+        if (user) {
+          return done(null, user);
+        }
+        user = new User;
+        user.twitter_id = profile.id;
+        user.name = profile.username;
+        user.screen_name = profile.displayName;
+        user.description = profile._json.description;
+        user.url = profile._json.url;
+        return user.save(function(err) {
+          return done(err, user);
+      });
     });
+
+  passport.session.id = profile.id;
+
   }
 ));
+
+// Sessionの設定
+// http://passportjs.org/guide/configure/
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  User.findById(user._id, function(err, user) {
+    done(err, user);
+  });
+});
+
+
+var userSchema = new mongoose.Schema({
+     twitter_id : Number
+  ,        name : String
+  , screen_name : String
+  , description : String
+  ,         url : String
+});
+
+
+var User = mongoose.model('User', userSchema);
+
+
 
 module.exports = {passport: passport};
