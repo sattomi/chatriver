@@ -18,6 +18,8 @@ body {
 	display: block;
 	margin: auto;
 	background: #E1E1E1;
+	overflow-x: hidden;
+  	min-width: 750px;
 }
 
 .message-container > .message-userlist {
@@ -234,12 +236,10 @@ body {
 .message-container > .message-chatarea > .message-typing {
 	width: 100%;
 	min-width: 300px;
-	overflow-: scroll; 
 	height: 10%;
 	padding: 7px 10px;
 	position: fixed;
 	bottom: 0px;
-
 	outline: none;
 	resize: none;
 	font-size: 13px;
