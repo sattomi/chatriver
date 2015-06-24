@@ -12,6 +12,10 @@ body {
 	width: 100%; 
 }
 
+#wrapper {
+	overflow: hidden;
+}
+
 .message-container {
 	display: block;
 	margin: auto;
