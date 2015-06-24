@@ -26,11 +26,12 @@ passport.use(new TwitterStrategy({
           return done(null, user);
         }
         user = new User;
-        user.twitter_id = profile.id;
-        user.name = profile.username;
+        user.twitter_id  = profile.id;
+        user.name        = profile.username;
         user.screen_name = profile.displayName;
         user.description = profile._json.description;
-        user.url = profile._json.url;
+        user.url         = profile._json.url;
+        user.image       = profile._json.profile_image_url;
         return user.save(function(err) {
           return done(err, user);
       });
@@ -60,6 +61,7 @@ var userSchema = new mongoose.Schema({
   , screen_name : String
   , description : String
   ,         url : String
+  ,       image : String
 });
 
 
