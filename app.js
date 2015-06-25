@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser')
 
 // passport-twitter用
 var session = require('express-session')
+var MongoStore = require('connect-mongo')(session);
 var auth = require('./passport');
 var passport = auth.passport;
 
@@ -21,11 +22,23 @@ var conf = require('config');
 
 // passport-twitter と mongoDBの接続
 app.use(cookieParser());
-app.use(passport.initialize()); 
-app.use(passport.session()); 
 app.use(session({
-    secret: 'secret'
+  secret: 'secret',
+   store: new MongoStore({
+       db: 'session',
+       host: 'localhost',
+       clear_interval: 60 * 60,
+   }),
+   cookie: {
+       httpOnly: false,
+       maxAge: new Date(Date.now() + 60 * 60 * 1000)
+   }
 }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 
 // 静的ファイルのルートディレクトリを指定
 app.use(express.static(__dirname + '/public'));
