@@ -1,0 +1,162 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>chatriver</title>
+  <link rel="stylesheet" type="text/css" href="/stylesheets/userpage.css">
+
+  <script type="text/javascript" src="/javascripts/jquery-1.7.1.min.js"></script>
+  <script src="./socket.io/socket.io.js"></script>
+</head>
+
+<body>
+<!--
+  <input type="text" id="name_input" style="width:100px;" />
+  <button onclick="changeName();">changeName</button>
+  <br>
+-->
+
+    <div id="wrapper">
+      <div class="message-container">
+        <ul class="message-userlist">
+            <li>
+              <a href="#">
+                <span class="user-img"><img src="<%= image_url %>" alt=""></span>
+                <span class="user-title"><%= name %></span>
+                <p class="user-desc"><%= description %></p>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <span class="user-img"></span>
+                <span class="user-title">Enrique Iglesias</span>
+                <p class="user-desc">enriqueiglesias@music.com</p>
+              </a>
+            </li>
+            <li>
+              <a class="active" href="#">
+                <span class="user-img"></span>
+                <span class="user-title">Jack Johnson</span>
+                <p class="user-desc">jackjohnson@music.com</p>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <span class="user-img"></span>
+                <span class="user-title">Paul McCartney</span>
+                <p class="user-desc">paulmccartney@music.com</p>
+              </a>
+            </li>
+          </ul>
+        <div class="message-chatarea">
+          <div class="message-log" id="msgArea">
+            <!-- messages will appear here. class="message bubble-left" -->
+
+
+          </div>
+          <div class="message-typing">
+  <!--          <textarea cols="20" rows="3"></textarea>  -->
+            <input type="text" id="msg_input" style="width:570px; height:30px" />
+            <button onclick="sendMessage();">send</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+     // msg_inputエリアに何か入力されたらRealtimeMessageを送信
+    jQuery("#msg_input").on('keyup',function(e){
+      var realTimeMessage = jQuery("#msg_input").val();
+      updateRealtimeMessage(realTimeMessage);
+    });
+
+     // msg_inputエリアでMeta key + Enterが押されたらMessageをsend
+    jQuery("#msg_input").keydown(function(e) {
+      if((e.metaKey || e.ctrlKey) && e.keyCode == 13){
+        sendMessage();
+      }
+    });
+
+     // name_inputエリアでMeta key + Enterが押されたら名前を変更
+    jQuery("#name_input").keydown(function(e) {
+      if((e.metaKey || e.ctrlKey) && e.keyCode == 13){
+        changeName();
+      }
+    });
+
+
+    // 1.イベントとコールバックの定義
+    var socketio = io.connect(location.origin);
+
+    socketio.on("connected", function (name) {});
+    socketio.on("send", function (data) {
+      addMessage(data.value);
+      clearRealtimeMessage();
+    });
+    socketio.on("disconnect", function () {});
+    socketio.on("istyping", function (data) {showRealtimeMessage(data); });
+
+    // 2.イベントに絡ませる関数の定義
+    function start(name) {
+      socketio.emit("connected", name);
+    }
+
+    function changeName() {
+      var newName = $('#name_input')[0];
+      myName = newName.value;
+      socketio.emit("changename", newName.value); //文字列としての扱い
+    }
+
+    function sendMessage() {
+      var textInput = $('#msg_input')[0];
+      var msg = textInput.value;
+      socketio.emit("send", {value: msg}); //objectとしての扱い
+      textInput.value = '';
+    }
+
+    function addMessage(msg) {
+      var newDom = document.createElement('div');
+      newDom.setAttribute('class', 'message-content');
+      newDom.innerHTML = "<span class='user-img'><img src='/images/octocat.jpeg'></span><span class='message-bubble'>" + msg + "</br><span class='message-timestamp'>" + new Date().toLocaleTimeString() + "</span>" + "</span></br>"
+      msgArea.appendChild(newDom);
+    }
+
+    function clearRealtimeMessage() {
+       $("#isTyping").remove();
+       realTimeTextBubble = '';
+    }
+
+
+    function showRealtimeMessage(data) {
+      if(data.msg){
+        if(!realTimeTextBubble){
+          setRealTimeTextBubble();
+        }
+        realTimeTextBubble.innerHTML =(data.msg + '...');
+      }else{
+        clearRealtimeMessage();
+      }
+    }
+
+    function setRealTimeTextBubble() {
+      realTimeTextBubble = document.createElement('div');   //TODO: dom操作じゃなくてcss操作にする
+      realTimeTextBubble.setAttribute('class', 'message bubble-left');
+      realTimeTextBubble.id = 'isTyping';
+      msgArea.appendChild(realTimeTextBubble);
+    }
+
+    function updateRealtimeMessage(msg) {
+      socketio.emit("update", {value: msg});
+    }
+
+    // 3.開始処理
+    var msgArea = document.getElementById('msgArea');
+    var myName = "original" + Math.floor(Math.random()*100);
+    var realTimeTextBubble = '';
+
+    addMessage("You are " + myName);
+    start(myName);
+    </script>
+
+  </body>
+</html>
