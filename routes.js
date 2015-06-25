@@ -6,15 +6,21 @@ var passport = require('passport');
 
 configRoutes = function(app, server, passport) {
 
-    app.get('/authenticated', function(request, response) {
+    app.get('/authenticated', function(req, res, next) {
         // 認証チェックの確認
-        if(request.session && request.session.id){
-            fs.readFile('./authenticated/secret.html', 'utf8', function (error, html) {
-                response.send(html);
+        console.log(req.user)
+        console.log(passport)
+        if(req.session && req.session.id){
+            // fs.readFile('./authenticated/secret.html', 'utf8', function (error, html) {
+            //     response.send(html);
+            // });
+            res.render('chat.ejs', {      name: req.user.name,
+              image_url: req.user.image,
+              description: req.user.description,
             });
         } else {
             response.redirect('/login');
-        }   
+        }
     });
 
     app.get('/login', function(request, response) {
