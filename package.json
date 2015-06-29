@@ -20,6 +20,6 @@
     "serve-favicon": "~2.2.0",
     "connect-mongo": "*",
     "socket.io": "*",
-    "config": "*",
+    "config": "*"
   }
 }
