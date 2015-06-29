@@ -8,12 +8,18 @@
 
 body {
 	background: #545454;
-	height:100%; 
-	width: 100%; 
+	height:100%;
+	width: 100%;
 }
 
 #wrapper {
 	overflow: hidden;
+}
+
+#myself {
+	background: #B8956E;
+	color: #F7F4E2;
+	font-size: 17px;
 }
 
 .message-container {
@@ -33,7 +39,7 @@ body {
 	height: 100%;
 	overflow-x: hidden;
 	overflow-y: scroll;
-	background: #878787;
+	background: #CDAE90;
 }
 
 .message-container > .message-chatarea {
@@ -42,16 +48,16 @@ body {
 	width: auto;
 	height: 100%;
 	padding-right: 10px;
-	background: #F5F5F5;
+	background: #F7F4E2;
 	overflow-x: hidden;
 }
 
 .message-container > .message-chatarea > .message-log {
 	width: 100%;
-	height: 90%;
+	height: 93%;
 	padding-left: 10px;
 	padding-right: 10px;
-	background: #F5F5F5;
+	background: inherit;
 	overflow-x: hidden;
 	overflow-y: scroll;
 
@@ -73,8 +79,12 @@ body {
 	display: block;
 	margin: 10px;
 	height: 40px; /*Keep height same as img thumbnail height*/
+	width: 40px; /*Keep height same as img thumbnail height*/
 	text-decoration: none;
 	color: #313131;
+	border: 2px solid rgb(140, 190, 178);
+	border-radius: 50%;
+	padding: 2px;
 
 	-webkit-transition: all ease .2s;
 	   -moz-transition: all ease .2s;
@@ -84,26 +94,32 @@ body {
 
 }
 
+.message-container > .message-chatarea > .message-log > .message-content > .user-img > img {
+	border-radius: 50%;
+}
+
  .message-bubble {
 	float: left;
-	margin-top: 10px;
+	margin-top: 30px;
 	padding-top: 5px;
 	padding-left: 12px;
 	padding-right: 12px;
 	padding-bottom: 5px;
 	font-size: 14px;
 	z-index: 2;
-	background: #B7CC90;
+	/* background: #B7CC90; */
 	max-width: 80%;
+	border: 2px solid #8CBEB2;
 
-	-webkit-border-radius: 25px;
-	   -moz-border-radius: 25px;
+	-webkit-border-radius: 0 25px 25px;
+	   -moz-border-radius: 0 25px 25px;
 }
 
 .message-container > .message-chatarea > .message-log > .message-content > .message-bubble:hover {
 	background: #A9C07F;
 }
 
+/*
 .message-container > .message-chatarea > .message-log > .message-content > .message-bubble:before {
 	content: " ";
 	position: absolute;
@@ -111,7 +127,7 @@ body {
 	width: 20px;
 	border-radius: 25px;
 	z-index: -5;
-	background: inherit; /*#B7CC90*/
+	background: inherit;
 	top: 14px;
 	left: 54px;
 
@@ -128,6 +144,7 @@ body {
 	top: 5px;
 	left: 51px;
 }
+*/
 
 .message-container > .message-chatarea > .message-log > .message-content > .message-bubble > .message-timestamp {
 	display: block;
@@ -153,7 +170,7 @@ body {
 }
 
 .message-container > .message-userlist a:hover {
-	background: #9E9E9E;
+	background: #B69A7F;
 
 	-webkit-transition: all ease .2s;
 	   -moz-transition: all ease .2s;
@@ -162,35 +179,51 @@ body {
 	        transition: all ease .2s;
 }
 
-.message-container > .message-userlist a .user-img {
-	display: block;
+.message-container > .message-userlist a .user-img > img {
 	float: left;
-	height: 40px;
-	width: 40px;
-	background: #6A8BBA;
+	display: block;
+	height: 40px; /*Keep height same as img thumbnail height*/
+	width: 40px; /*Keep height same as img thumbnail height*/
+	text-decoration: none;
+	color: #F7F4E2;
+	border: 2px solid #F7F4E2;
+	border-radius: 50%;
+	margin-bottom: 2px;
 }
 
 .message-container > .message-userlist a .user-title {
-	margin-left: 5px;
+	margin-left: 13px;
+}
+
+.message-container > .message-userlist a #add-new-friend {
+	position: absolute;
+}
+
+.message-container > .message-userlist a .new-friend-msg {
+	position: relative;
+	margin-left: 10px;
+	bottom: -11px;
 }
 
 .message-container > .message-userlist a .user-desc {
-	padding-left: 5px;
-	padding-top: 5px;
+	padding-left: 22px;
+	padding-top: 1px;
 	font-size: 12px;
 	color: #5A5A5A;
     white-space: nowrap;
-	overflow: hidden;    
+	overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .message-container > .message-userlist a.active {
-	background: #BFBFBF;
+	background: #EDCBAA;
 }
 
 .message-container > .message-userlist a.highlight {
-	background: #90B2CC;
+	background: #EDCBAA;
 }
+
+
 
 .message-container > .message-userlist a.highlight .user-title,
 .message-container > .message-userlist a.highlight .user-desc {
@@ -235,63 +268,54 @@ body {
 */
 
 .message-container > .message-chatarea > .message-typing {
-	width: 100%;
-	min-width: 300px;
-	height: 10%;
-	padding: 7px 10px;
 	position: fixed;
-	bottom: 0px;
+	width: 100%
+	height: 7%;
+	margin-left: 25px;
 	outline: none;
 	resize: none;
 	font-size: 13px;
 	color: #666;
-	background: #f6f6f6;
-	border: 1px solid #b9b9b9;
-	border-top-color: #a4a4a4;
-	box-shadow: 0 1px 1px rgba(0,0,0,.17) inset;
-
-
- 	left: 220px;
-
-
-
+	background: #F7F4E2;
+	overflow-x: hidden;
 
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;
 	        box-sizing: border-box;
 }
 
-.message-container > .message-chatarea > .message-typing:focus {
-	background: #FFF;
+.message-container > .message-chatarea > .message-typing > #msg_input {
+	width: 580px;
+	height: 35px;
+	min-width: 300px;
+	border-color: #CDAE90;
+	-webkit-border-radius: 25px;
+	   -moz-border-radius: 25px;
 }
 
 .message-container > .message-chatarea > .message-typing > button {
 	display: inline;
-
 	margin-top: 0px;
 	height: 30px;
 	width: 50px;
-	color: #000000;
-	background: -webkit-linear-gradient(#F5F5F5, #E9E9E9);
-	background:    -moz-linear-gradient(#F5F5F5, #E9E9E9);
-	background:      -o-linear-gradient(#F5F5F5, #E9E9E9);
-	background:         linear-gradient(#F5F5F5, #E9E9E9);
-	border: 2px solid #CCC;
-	box-shadow: 0px 1px 2px #C6C6C6;
+	color: #F7F4E2;
+	font-size: 14px;
+	background: #BDA084;
+
 	cursor: pointer;
+
+
+	 -webkit-border-radius: 25px;
+    	-moz-border-radius: 25px;
 }
 
 .message-container > .message-chatarea > .message-typing > button:hover {
-	background: -webkit-linear-gradient(#FFFFFF, #DFDFDF);
-	background:    -moz-linear-gradient(#FFFFFF, #DFDFDF);
-	background:      -o-linear-gradient(#FFFFFF, #DFDFDF);
-	background:         linear-gradient(#FFFFFF, #DFDFDF);
+	color: #000000;
+	background: #DBBA99;
 }
 
 .message-container > .message-chatarea > .message-typing > button:active {
 	box-shadow: inset 0px 0px 10px #5A5A5A;
-	background: -webkit-linear-gradient(#E9E9E9, #F5F5F5);
-	background:    -moz-linear-gradient(#E9E9E9, #F5F5F5);
-	background:      -o-linear-gradient(#E9E9E9, #F5F5F5);
-	background:         linear-gradient(#E9E9E9, #F5F5F5);
+	color: #000000;
+	background: #DBBA99;
 }
