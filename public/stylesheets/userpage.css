@@ -287,8 +287,10 @@ body {
 .message-container > .message-chatarea > .message-typing > #msg_input {
 	width: 580px;
 	height: 35px;
+	padding-left: 9px;
 	min-width: 300px;
-	border-color: #CDAE90;
+	border: 2px solid #B5997E;
+	outline: 0;
 	-webkit-border-radius: 25px;
 	   -moz-border-radius: 25px;
 }
@@ -296,14 +298,14 @@ body {
 .message-container > .message-chatarea > .message-typing > button {
 	display: inline;
 	margin-top: 0px;
-	height: 30px;
+	height: 32px;
 	width: 50px;
 	color: #F7F4E2;
 	font-size: 14px;
 	background: #BDA084;
-
+	border: 2px solid #B5997E;
+	outline: 0;
 	cursor: pointer;
-
 
 	 -webkit-border-radius: 25px;
     	-moz-border-radius: 25px;
@@ -312,10 +314,12 @@ body {
 .message-container > .message-chatarea > .message-typing > button:hover {
 	color: #000000;
 	background: #DBBA99;
+	border: 2px solid #D3B392;
 }
 
 .message-container > .message-chatarea > .message-typing > button:active {
 	box-shadow: inset 0px 0px 10px #5A5A5A;
 	color: #000000;
 	background: #DBBA99;
+	border: 2px solid #D3B392;
 }
