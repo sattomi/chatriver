@@ -16,7 +16,7 @@ configRoutes = function(app, server, passport) {
             // });
             res.render('chat.ejs', {      name: req.user.name,
               image_url: req.user.image,
-              description: req.user.screen_name,
+              screen_name: req.user.screen_name,
             });
         } else {
             response.redirect('/login');

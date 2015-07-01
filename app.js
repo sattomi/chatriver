@@ -62,11 +62,11 @@ var userHash = {};
 io.sockets.on("connection", function (socket) {
 
   // 接続開始カスタムイベント(接続元ユーザを保存し、他ユーザへ通知)
-  socket.on("connected", function (name) {
-    var msg = name + "が入室しました";
+  socket.on("connected", function (data) {
+    var msg = data.name + "が入室しました";
     var img = "/images/octocat.jpeg";
     //socket.to(socket.id).json.emit("send", {msg: msg, img: img});
-    userHash[socket.id] = name;
+    userHash[socket.id] = data.id;
     socket.broadcast.emit("send", {msg: msg, img: img});
   });
 /*

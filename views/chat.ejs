@@ -21,7 +21,7 @@
             <li>
               <a id="myself" href="#">
                 <span class="user-img"><img src="<%= image_url %>" alt=""></span>
-                <span class="user-title"><%= description %></span>
+                <span class="user-title"><%= screen_name %></span>
                 <p class="user-desc"><%= name %></p>
               </a>
             </li>
@@ -111,8 +111,8 @@
     socketio.on("istyping", function (data) {showRealtimeMessage(data); });
 
     // 2.イベントに絡ませる関数の定義
-    function start(name) {
-      socketio.emit("connected", name);
+    function start(data) {
+      socketio.emit("connected", {name:data.name, id:data.id});
     }
 
     function changeName() {
@@ -167,11 +167,11 @@
 
     // 3.開始処理
     var msgArea = document.getElementById('msgArea');
-    var myName = "<%= description %>";
+    var myName = "<%= screen_name %>";
     var myImg = "<%= image_url %>";
     var realTimeTextBubble = '';
 
-    start(myName);
+    start({name:myName, id:<%= name %>});
     </script>
 
   </body>
