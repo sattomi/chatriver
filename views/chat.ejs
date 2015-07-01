@@ -19,33 +19,47 @@
       <div class="message-container">
         <ul class="message-userlist">
             <li>
-              <a href="#">
+              <a id="myself" href="#">
                 <span class="user-img"><img src="<%= image_url %>" alt=""></span>
-                <span class="user-title"><%= name %></span>
-                <p class="user-desc"><%= description %></p>
+                <span class="user-title"><%= description %></span>
+                <p class="user-desc"><%= name %></p>
               </a>
             </li>
             <li>
               <a href="#">
-                <span class="user-img"></span>
-                <span class="user-title">Enrique Iglesias</span>
-                <p class="user-desc">enriqueiglesias@music.com</p>
+                <span class="user-img"><img src="/images/flower-mini.png" alt=""></span>
+                <span class="user-title">れいゆ</span>
+                <p class="user-desc">rei__yu</p>
               </a>
             </li>
             <li>
               <a class="active" href="#">
-                <span class="user-img"></span>
-                <span class="user-title">Jack Johnson</span>
-                <p class="user-desc">jackjohnson@music.com</p>
+                <span class="user-img"><img src="/images/satomi-mini.png" alt=""></span>
+                <span class="user-title">Rei</span>
+                <p class="user-desc">revive_rei</p>
               </a>
             </li>
             <li>
               <a href="#">
-                <span class="user-img"></span>
-                <span class="user-title">Paul McCartney</span>
-                <p class="user-desc">paulmccartney@music.com</p>
+                <span class="user-img"><img src="/images/satomii-mini.png" alt=""></span>
+                <span class="user-title">さとみ</span>
+                <p class="user-desc">min_min</p>
               </a>
             </li>
+            <li>
+              <a href="#">
+                <span class="user-img"><img src="/images/pig.jpeg" alt=""></span>
+                <span class="user-title">ゆかこ</span>
+                <p class="user-desc">yu_ka_k0</p>
+              </a>
+            </li>
+            <li>
+              <a id="add-new-friend" href="#">
+                <span class="user-img"><img src="/images/plus-mini.png"></span>
+                <span class="new-friend-msg">Add New Friend</span>
+              </a>
+            </li>
+
           </ul>
         <div class="message-chatarea">
           <div class="message-log" id="msgArea">
@@ -55,7 +69,7 @@
           </div>
           <div class="message-typing">
   <!--          <textarea cols="20" rows="3"></textarea>  -->
-            <input type="text" id="msg_input" style="width:570px; height:30px" />
+            <input type="text" id="msg_input"/>
             <button onclick="sendMessage();">send</button>
 
           </div>
@@ -90,7 +104,7 @@
 
     socketio.on("connected", function (name) {});
     socketio.on("send", function (data) {
-      addMessage(data.value);
+      addMessage(data);
       clearRealtimeMessage();
     });
     socketio.on("disconnect", function () {});
@@ -110,14 +124,15 @@
     function sendMessage() {
       var textInput = $('#msg_input')[0];
       var msg = textInput.value;
-      socketio.emit("send", {value: msg}); //objectとしての扱い
+      var img = myImg
+      socketio.emit("send", {msg: msg, img: img}); //objectとしての扱い
       textInput.value = '';
     }
 
-    function addMessage(msg) {
+    function addMessage(data) {
       var newDom = document.createElement('div');
       newDom.setAttribute('class', 'message-content');
-      newDom.innerHTML = "<span class='user-img'><img src='/images/octocat.jpeg'></span><span class='message-bubble'>" + msg + "</br><span class='message-timestamp'>" + new Date().toLocaleTimeString() + "</span>" + "</span></br>"
+      newDom.innerHTML = "<span class='user-img'><img src='" + data.img + "'></span><span class='message-bubble'>" + data.msg + "</br><span class='message-timestamp'>" + new Date().toLocaleTimeString() + "</span>" + "</span></br>"
       msgArea.appendChild(newDom);
     }
 
@@ -132,7 +147,7 @@
         if(!realTimeTextBubble){
           setRealTimeTextBubble();
         }
-        realTimeTextBubble.innerHTML =(data.msg + '...');
+        realTimeTextBubble.innerHTML ="<span class='user-img'><img src='" + data.img + "'></span><span class='message-bubble'>" + data.msg + "..." + "</span></br>";
       }else{
         clearRealtimeMessage();
       }
@@ -140,21 +155,22 @@
 
     function setRealTimeTextBubble() {
       realTimeTextBubble = document.createElement('div');   //TODO: dom操作じゃなくてcss操作にする
-      realTimeTextBubble.setAttribute('class', 'message bubble-left');
+      realTimeTextBubble.setAttribute('class', 'message-content')
       realTimeTextBubble.id = 'isTyping';
       msgArea.appendChild(realTimeTextBubble);
     }
 
     function updateRealtimeMessage(msg) {
-      socketio.emit("update", {value: msg});
+      var img = myImg;
+      socketio.emit("update", {msg: msg, img: img});
     }
 
     // 3.開始処理
     var msgArea = document.getElementById('msgArea');
-    var myName = "original" + Math.floor(Math.random()*100);
+    var myName = "<%= description %>";
+    var myImg = "<%= image_url %>";
     var realTimeTextBubble = '';
 
-    addMessage("You are " + myName);
     start(myName);
     </script>
 

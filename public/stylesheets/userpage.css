@@ -96,6 +96,8 @@ body {
 
 .message-container > .message-chatarea > .message-log > .message-content > .user-img > img {
 	border-radius: 50%;
+	height: 40px; /*Keep height same as img thumbnail height*/
+	width: 40px; /*Keep height same as img thumbnail height*/
 }
 
  .message-bubble {

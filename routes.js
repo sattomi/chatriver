@@ -16,7 +16,7 @@ configRoutes = function(app, server, passport) {
             // });
             res.render('chat.ejs', {      name: req.user.name,
               image_url: req.user.image,
-              description: req.user.description,
+              description: req.user.screen_name,
             });
         } else {
             response.redirect('/login');
@@ -36,7 +36,7 @@ configRoutes = function(app, server, passport) {
     // passport-twitter
     // http://passportjs.org/guide/twitter/
     app.get('/auth/twitter', passport.authenticate('twitter'));
-    app.get('/auth/twitter/callback', 
+    app.get('/auth/twitter/callback',
         passport.authenticate('twitter', { successRedirect: '/authenticated',
                                            failureRedirect: '/login' }));
 
