@@ -82,6 +82,7 @@
     jQuery("#msg_input").on('keyup',function(e){
       var realTimeMessage = jQuery("#msg_input").val();
       updateRealtimeMessage(realTimeMessage);
+
     });
 
      // msg_inputエリアでMeta key + Enterが押されたらMessageをsend
@@ -108,7 +109,13 @@
       clearRealtimeMessage();
     });
     socketio.on("disconnect", function () {});
-    socketio.on("istyping", function (data) {showRealtimeMessage(data); });
+    socketio.on("istyping", function (data) {
+      if(data.id===myId){
+        showMyRealtimeMessage(data)
+      }else{
+        showRealtimeMessage(data);
+      }
+    });
 
     // 2.イベントに絡ませる関数の定義
     function start(data) {
@@ -136,9 +143,14 @@
       msgArea.appendChild(newDom);
     }
 
-    function clearRealtimeMessage() {
-       $("#isTyping").remove();
-       realTimeTextBubble = '';
+    function clearRealtimeMessage(data) {
+      if(data===myId){
+        $("#myTyping").remove();
+        myRealTimeTextBubble = '';
+      }else{
+        $("#isTyping").remove();
+        realTimeTextBubble = '';
+      }
     }
 
 
@@ -149,7 +161,18 @@
         }
         realTimeTextBubble.innerHTML ="<span class='user-img'><img src='" + data.img + "'></span><span class='message-bubble'>" + data.msg + "..." + "</span></br>";
       }else{
-        clearRealtimeMessage();
+        clearRealtimeMessage(data.id);
+      }
+    }
+
+    function showMyRealtimeMessage(data) {
+      if(data.msg){
+        if(!myRealTimeTextBubble){
+          setMyRealTimeTextBubble();
+        }
+        myRealTimeTextBubble.innerHTML ="<span class='user-img'><img src='" + data.img + "'></span><span class='message-bubble'>" + data.msg + "..." + "</span></br>";
+      }else{
+        clearRealtimeMessage(data.id);
       }
     }
 
@@ -160,14 +183,21 @@
       msgArea.appendChild(realTimeTextBubble);
     }
 
+    function setMyRealTimeTextBubble() {
+      myRealTimeTextBubble = document.createElement('div');   //TODO: dom操作じゃなくてcss操作にする
+      myRealTimeTextBubble.setAttribute('class', 'message-content')
+      myRealTimeTextBubble.id = 'myTyping';
+      msgArea.appendChild(myRealTimeTextBubble);
+    }
+
     function updateRealtimeMessage(msg) {
-      var img = myImg;
-      socketio.emit("update", {msg: msg, img: img});
+      socketio.emit("update", {msg: msg, img: myImg, id: myId});
     }
 
     // 3.開始処理
     var msgArea = document.getElementById('msgArea');
     var myName = "<%= screen_name %>";
+    var myId = "<%= name %>";
     var myImg = "<%= image_url %>";
     var realTimeTextBubble = '';
 

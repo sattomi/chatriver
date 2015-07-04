@@ -26,7 +26,7 @@ app.use(session({
   secret: 'secret',
    store: new MongoStore({
        db: 'session',
-       host: 'localhost',
+       host: '127.0.0.1',
        clear_interval: 60 * 60,
    }),
    cookie: {
@@ -84,7 +84,7 @@ io.sockets.on("connection", function (socket) {
 
   socket.on("update", function (data) {
     var name = userHash[socket.id];
-    io.sockets.emit("istyping", {msg: data.msg, img: data.img});
+    io.sockets.emit("istyping", {msg: data.msg, img: data.img, id: data.id});
   });
 
 
