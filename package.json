@@ -21,5 +21,9 @@
     "connect-mongo": "*",
     "socket.io": "*",
     "config": "*"
+  },
+  "engines": {
+    "node": "0.10.X",
+    "npm": "1.4.X"
   }
 }

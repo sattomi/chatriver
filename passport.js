@@ -1,16 +1,19 @@
 // http://passportjs.org/guide/twitter/
 
-var conf = require('config');
+//var conf = require('config');
 var mongoose = require('mongoose');
 
 var passport = require('passport')
   , TwitterStrategy = require('passport-twitter').Strategy;
 
 // ./config/default.jsonから変数の読み出し
-var TWITTER_CONSUMER_KEY    = conf.twitter.CONSUMER_KEY;
-var TWITTER_CONSUMER_SECRET = conf.twitter.CONSUMER_SECRET;
+//var TWITTER_CONSUMER_KEY    = conf.twitter.CONSUMER_KEY;
+//var TWITTER_CONSUMER_SECRET = conf.twitter.CONSUMER_SECRET;
 
-mongoose.connect("mongodb://localhost/thru");
+var TWITTER_CONSUMER_KEY    = process.env.CONSUMER_KEY;
+var TWITTER_CONSUMER_SECRET = process.env.CONSUMER_SECRET;
+
+mongoose.connect(process.env.MONGOLAB_URI);
 
 
 passport.use(new TwitterStrategy({

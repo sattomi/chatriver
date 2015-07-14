@@ -105,6 +105,10 @@
 
     socketio.on("connected", function (name) {});
     socketio.on("send", function (data) {
+      if(data.name!==myName){
+        friendName = data.name;
+        friendImg = data.img; 
+      }
       addMessage(data);
       clearRealtimeMessage();
     });
@@ -201,6 +205,8 @@
     var myImg = "<%= image_url %>";
     var realTimeTextBubble = '';
 
+    var friendName = "";
+    var friendImg = "";
     start({name:myName, id:<%= name %>});
     </script>
 

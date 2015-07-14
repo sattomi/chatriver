@@ -67,7 +67,7 @@ io.sockets.on("connection", function (socket) {
     var img = "/images/octocat.jpeg";
     //socket.to(socket.id).json.emit("send", {msg: msg, img: img});
     userHash[socket.id] = data.id;
-    socket.broadcast.emit("send", {msg: msg, img: img});
+    socket.broadcast.emit("send", {msg: msg, img: img, name: name});
   });
 /*
   // 名前変更カスタムイベント
