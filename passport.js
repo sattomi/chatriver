@@ -13,7 +13,7 @@ var passport = require('passport')
 var TWITTER_CONSUMER_KEY    = process.env.CONSUMER_KEY;
 var TWITTER_CONSUMER_SECRET = process.env.CONSUMER_SECRET;
 
-mongoose.connect(process.env.MONGOLAB_URI);
+mongoose.connect(process.env.MONGOLAB_URI || "mongodb://localhost/thru");
 
 
 passport.use(new TwitterStrategy({

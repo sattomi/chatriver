@@ -25,7 +25,7 @@ app.use(cookieParser());
 app.use(session({
   secret: 'secret',
    store: new MongoStore({
-       db: 'session',
+       db: 'heroku_hq3g354j' || 'session',
        host: process.env.MONGOLAB_URI || '127.0.0.1',
        clear_interval: 60 * 60,
    }),
