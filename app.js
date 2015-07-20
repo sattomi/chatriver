@@ -22,10 +22,12 @@ var conf = require('config');
 
 // passport-twitter と mongoDBの接続
 app.use(cookieParser());
+console.log("before MongoStore")
 app.use(session({
   secret: 'secret',
    store: new MongoStore({
-       db: 'heroku_hq3g354j' || 'session',
+       db: 'heroku_hq3g354j',
+       collection: 'session',
        host: process.env.MONGOLAB_URI || '127.0.0.1',
        clear_interval: 60 * 60,
    }),
@@ -34,6 +36,7 @@ app.use(session({
        maxAge: new Date(Date.now() + 60 * 60 * 1000)
    }
 }));
+console.log("after MongoStore")
 app.use(passport.initialize());
 app.use(passport.session());
 
