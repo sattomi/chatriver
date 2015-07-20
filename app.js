@@ -26,7 +26,7 @@ app.use(session({
   secret: 'secret',
    store: new MongoStore({
        db: 'session',
-       host: '127.0.0.1',
+       host: process.env.MONGOLAB_URI || '127.0.0.1',
        clear_interval: 60 * 60,
    }),
    cookie: {
